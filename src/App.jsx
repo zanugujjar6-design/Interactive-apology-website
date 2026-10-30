@@ -1,40 +1,28 @@
-import { useState, useEffect, useRef } from "react";
-import "./App.css";
+import {useState} from "react"
+import "./App.css"
+const memories=[{url:"https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500",cap:"My favorite memory of us ❤️"},{url:"https://images.unsplash.com/photo-1529634597503-139d799a6838?w=500",cap:"You make my world brighter ✨"}]
+const s1="https://media.tenor.com/2uyENRuvV-0AAAAi/tkthao219-bubududu.gif"
+const s2="https://media.tenor.com/1UqsahXv1yMAAAAi/bubu-bubu-dudu.gif"
+const s3="https://media.tenor.com/6n1x2I7R6yIAAAAj/bubu-dudu-sad.gif"
+const s4="https://media.tenor.com/x3dN9uKq1B4AAAAi/bubu-dudu-love-you.gif"
 export default function App(){
-  const [page,setPage]=useState(0);
-  const [pos,setPos]=useState({x:50,y:15});
-  const [idx,setIdx]=useState(0);
-  const [typed,setTyped]=useState("");
-  const letterRef=useRef(null);
-  const fullLetter=`My Dearest Love,
+const [step,setStep]=useState(1);const [noPos,setNoPos]=useState({x:0,y:0});const [idx,setIdx]=useState(0);const [showLetter,setShowLetter]=useState(false)
+const move=()=>setNoPos({x:Math.random()*140-70,y:Math.random()*70-35})
+return(
+<div className="main-bg">
+<div className="hearts">{[...Array(20)].map((_,i)=><span key={i} style={{left:`${Math.random()*100}%`,animationDelay:`${Math.random()*5}s`}}>💗</span>)}</div>
+{step===1&&<div className="card"><img src={s1} className="sticker"/><h1>Hey<br/>My Life Norii!</h1><p>I've got something special to show you. I hope you'll like it</p><button className="btn" onClick={()=>setStep(2)}>Continue ❤️</button></div>}
+{step===2&&<div className="card"><img src={s2} className="sticker"/><h1 className="small-h">Do you still love me?</h1><div className="no-box"><button className="btn" style={{width:"auto"}} onClick={()=>setStep(3)}>Yes 💖</button><button className="btn red moving" style={{left:`calc(55% + ${noPos.x}px)`,top:`${40+noPos.y}px`}} onMouseEnter={move} onClick={move}>No 😢</button></div></div>}
+{step===3&&<div className="card"><img src={s3} className="sticker"/><h1 className="small-h">You still love me? Really? 🥺</h1><p>Are you sure you still love me? Please think again!</p><div className="row2"><button className="btn green" onClick={()=>setStep(4)}>Yes 😘</button><button className="btn red" onClick={()=>setStep(4)}>Of Course! 💕</button></div></div>}
+{step===4&&<div className="card"><div className="mem-wrap"><img src={memories[idx].url} className="mem-img"/></div><p>{memories[idx].cap}</p><div className="nav"><button onClick={()=>setIdx(idx>0?idx-1:memories.length-1)}>‹</button><span>{idx+1} / {memories.length}</span><button onClick={()=>setIdx(idx<memories.length-1?idx+1:0)}>›</button></div><button className="btn purple" onClick={()=>setStep(5)}>Next ✨</button></div>}
+{step===5&&<div className="card"><img src={s4} className="sticker big"/><h1>I love you<br/>so much! ❤️</h1>{!showLetter?<><p>I wanted to tell you how much you mean to me</p><button className="btn" onClick={()=>setShowLetter(true)}>Read My Letter 💌</button></>:<><div className="letter">My Dearest Norii,
 
-I'm writing this letter with a heart full of remorse and a mind filled with reflection. 🥺
+I wanted to take a moment to tell you how much you mean to me. You are the most amazing person I have ever met.
 
-I know I've hurt you, and for that, I am truly sorry. 💔🥺
+Every moment with you is special. I am so sorry if I ever hurt you. You are My Life.
 
-Every moment we've shared has been precious to me, and the thought of causing you pain weighs heavily on my soul. 💗
+I love you more than words can express.
 
-Please forgive me Noori, you mean the whole world to me. Balu also misses you so much.
-
-Forever yours,
-Azan ❤️`;
-  useEffect(()=>{ if(page===7){ let i=0; setTyped(""); const t=setInterval(()=>{ i++; setTyped(fullLetter.slice(0,i)); if(i>=fullLetter.length) clearInterval(t); if(letterRef.current) letterRef.current.scrollTop=letterRef.current.scrollHeight; }, 25); return ()=>clearInterval(t); } },[page]);
-  const memories=["https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=400","https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400","https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=400","https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=400","https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400","https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=400","https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400","https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=400","https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=400"];
-  const move=()=>setPos({x:Math.random()*60+5,y:Math.random()*50+5});
-  return(
-    <div className="main-bg">
-      <div className="hearts">{[...Array(15)].map((_,i)=><span key={i} style={{left:`${Math.random()*100}%`,animationDelay:`${Math.random()*5}s`}}>💗</span>)}</div>
-      <div className="card">
-        {page===0&&<><img className="sticker" src="https://media.tenor.com/2UYENRuvVysAAAAi/cute-bunny.gif"/><h1>Hey<br/>Cutiepie!</h1><p>Can we talk for a moment? There's something Important I want to tell you.</p><button className="btn" onClick={()=>setPage(1)}>Continue ♥</button></>}
-        {page===1&&<><img className="sticker" src="https://media.tenor.com/CWHq5Nq_pWUAAAAi/milk-and-mocha-crying.gif"/><h1>An Honest<br/>Apology</h1><p>I know I hurt you... and I've been feeling bad about it.</p><button className="btn" onClick={()=>setPage(2)}>Next →</button></>}
-        {page===2&&<><img className="sticker big" src="https://media.tenor.com/YeHCd0yKg3UAAAAj/bubu-dudu-sorry.gif"/><h1 className="small-h">I am sorry yrr 🥺</h1><p>Please mujhe maaf kr do ❤️</p><div className="row2"><button className="btn green" onClick={()=>setPage(4)}>YES ❤️</button><button className="btn red" onClick={()=>setPage(3)}>NO 🥺</button></div></>}
-        {page===3&&<><img className="sticker" src="https://media.tenor.com/Q5CpwP1B0SMAAAAi/bubu-dudu.gif"/><h1 className="small-h">Are you sure? 🥺</h1><p>Try clicking "No" if you can...</p><div className="no-box"><button className="btn red moving" onMouseEnter={move} onTouchStart={move} style={{left:`${pos.x}%`,top:`${pos.y}%`}}>No</button></div><button className="btn green" onClick={()=>setPage(4)}>Forgive Me ❤️</button></>}
-        {page===4&&<><img className="sticker big" src="https://media.tenor.com/0AVbKGYQ1dIAAAAj/bubu-dudu-bubu-dudu-bear.gif"/><h1>Thank you for hearing me out ❤️</h1><p>It means the absolute world to me. Let's look back at some of our special moments.</p><button className="btn" onClick={()=>setPage(5)}>View Memories 💕</button></>}
-        {page===5&&<><h1>Our Little Memories 💗</h1><p className="small">Swipe or drag left/right to view our moments...</p><div className="mem-wrap"><img src={memories[idx]} className="mem-img"/></div><div className="nav"><button onClick={()=>setIdx(i=>i>0?i-1:8)}>‹</button><span>{idx+1} / 9</span><button onClick={()=>setIdx(i=>i<8?i+1:0)}>›</button></div><button className="btn" onClick={()=>setPage(6)}>Read My Letter →</button></>}
-        {page===6&&<><img className="sticker" src="https://media.tenor.com/Vr3IhzAzFhoAAAAj/bubu-dudu-sweet.gif"/><h1>My Sorry Letter to You...</h1><p>I've been sitting here for hours, trying to find the right words...</p><button className="btn" onClick={()=>setPage(7)}>Continue reading...</button></>}
-        {page===7&&<><h1>A Letter From My Heart</h1><div className="letter" ref={letterRef}>{typed}</div><button className="btn" onClick={()=>setPage(8)}>One Last Thing... 💕</button></>}
-        {page===8&&<><img className="sticker big" src="https://media.tenor.com/lZc8p3y2b4sAAAAj/bubu-dudu-flowers.gif"/><h1>This flower will never wilt... 🌹</h1><p className="left">Just like a beautiful memory, my care and respect for you should never fade. I hope my actions can show you how sincerely I mean this apology. You deserve kindness, honesty, and understanding, and I want to do better.<br/><br/><b>You mean a lot to me ✨💕</b></p><button className="btn purple" onClick={()=>setPage(0)}>Start Over 🔄</button></>}
-      </div>
-    </div>
-  )
-}
+Forever Yours,
+Azan ❤️</div><button className="btn green" onClick={()=>window.open("https://wa.me/?text=I%20love%20you%20Norii%20❤️")}>Send Love 💕</button></>}</div>}
+</div>)}

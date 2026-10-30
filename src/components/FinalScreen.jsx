@@ -1,4 +1,4 @@
-Hu// export default FinalScreen;
+// export default FinalScreen;
 import { useEffect, useState } from "react";
 import celebration from "../assets/images/celebration.png";
 
